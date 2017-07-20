@@ -1,8 +1,16 @@
 package com.tintsoft.yuncms.base;
 
-/**
- * Created by xutongle on 2017/7/20.
- */
 
-public class BaseActivity {
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+/**
+ * Activity 基类
+ */
+public class BaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 }
