@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getDefault())
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -9,13 +13,108 @@ android {
         targetSdkVersion 26
         versionCode 100
         versionName "1.0.0"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+        jackOptions {
+            enabled true
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        debug {
+            storeFile file("yuncms.jks")
+            storePassword "123456"
+            keyAlias "yuncms"
+            keyPassword "123456"
         }
+        release {
+            storeFile file("yuncms.jks")
+            storePassword "123456"
+            keyAlias "yuncms"
+            keyPassword "123456"
+        }
+    }
+    buildTypes {
+        def BOOLEAN = "boolean"
+        def TRUE = "true"
+        def FALSE = "false"
+        def DEBUG_ENABLE = "DEBUG_ENABLE"
+
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            debuggable true
+            //signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField BOOLEAN, DEBUG_ENABLE, TRUE
+            manifestPlaceholders = [PUSH_APPID    : "AEG1H6OkLJ9tAsX2PR3A16",
+                                    PUSH_APPKEY   : "OsWfyXsjij6IzTQkwq3is4",
+                                    PUSH_APPSECRET: "R9Z6LIo5IU6fkM3YLL3mG1",
+                                    PUSH_GROUPID  : "",
+                                    TD_APPKEY     : "AA1B049E3E0E28B285A98F4442BCA2AE"]
+        }
+        release {
+            zipAlignEnabled true
+            debuggable false
+            shrinkResources true
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField BOOLEAN, DEBUG_ENABLE, FALSE
+            manifestPlaceholders = [PUSH_APPID    : "HCl3iq4tW4960srRBNKCz3",
+                                    PUSH_APPKEY   : "qFKTzwfPFz92UOE5G9r4j1",
+                                    PUSH_APPSECRET: "wIXzgjV9on8rHWQS075995",
+                                    PUSH_GROUPID  : "",
+                                    TD_APPKEY     : "AA1B049E3E0E28B285A98F4442BCA2AE"]
+        }
+    }
+
+    productFlavors {
+        alpha {}
+        //360渠道
+        _360 {}
+        //小米渠道
+        xiaomi {}
+        //豌豆荚
+        wandoujia {}
+        oppo {}
+        //应用宝
+        yingyongbao {}
+        //魅族
+        meizu {}
+        vivo {}
+        //华为
+        huawei {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [TD_CHANNEL_ID: flavor.name]
+    }
+
+    applicationVariants.all {
+        variant ->
+            variant.outputs.each {
+                output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def flavorName = variant.productFlavors.get(0).name;
+                        def developV = variant.buildType.name;
+                        def fileName = "yuncms_v${defaultConfig.versionName}_${flavorName}_${releaseTime()}_${developV}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+            }
+    }
+
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -25,5 +124,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
+
+    compile 'com.google.code.gson:gson:2.8.1'
     testCompile 'junit:junit:4.12'
 }
