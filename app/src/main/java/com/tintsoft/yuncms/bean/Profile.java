@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * 个人资料Bean
+ */
 public class Profile implements Serializable {
 
     @SerializedName("user_id")

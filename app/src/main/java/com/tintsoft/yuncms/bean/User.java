@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-
+/**
+ * 账户Bean
+ */
 public class User implements Serializable {
 
     int id;
