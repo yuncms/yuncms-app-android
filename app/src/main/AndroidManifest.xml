@@ -50,6 +50,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- App配置开始 -->
+        <meta-data
+            android:name="com.tintsoft.appkey"
+            android:value="${APP_KEY}" />
+        <meta-data
+            android:name="com.tintsoft.appsecret"
+            android:value="${APP_SECRET}" />
+        <!-- App配置结束 -->
+        <!-- 阿里云配置开始 -->
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="${ALIYUN_APP_KEY}" />
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="${ALIYUN_APP_SECRET}" />
+        <meta-data
+            android:name="ALIYUN_MAN_CHANNEL"
+            android:value="${ALIYUN_CHANNEL_ID}" />
+        <!-- 阿里云配置结束 -->
+        <!-- 高德地图配置开始 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="${AMPI_KEY}" />
+        <!--<service android:name="com.amap.api.location.APSService" />-->
+        <!-- 高德地图配置结束 -->
+        <!-- 腾讯X5内核 -->
+        <meta-data
+            android:name="QBSDKAppKey"
+            android:value="${QBSDK_KEY}" />
+        <!-- 腾讯X5内核结束 -->
+
     </application>
 
 </manifest>
